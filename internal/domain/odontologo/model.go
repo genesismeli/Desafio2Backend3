@@ -5,13 +5,22 @@ package odontologo
 
 type Odontologo struct {
 	ID        int    `json:"id"`
-	Nombre    string `json:"nombre"`
-	Apellido  string `json:"apellido"`
 	Matricula string `json:"matricula"`
+	Apellido  string `json:"apellido"`
+	Nombre    string `json:"nombre"`
+	
+	
 }
 
 type RequestOdontologo struct {
-	Nombre    string `json:"nombre"`
-	Apellido  string `json:"apellido"`
 	Matricula string `json:"matricula"`
+	Apellido  string `json:"apellido"`
+	Nombre    string `json:"nombre"`
+	
+	
+}
+
+type RequestUpdateOdontologoSubject struct {
+	key string `query:"key"`
+	value string `query:"value"`
 }
