@@ -1,9 +1,10 @@
 package paciente
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
+
+	"github.com/genesismeli/Desafio2Backend3/core/web"
 
 	"github.com/genesismeli/Desafio2Backend3/internal/domain/paciente"
 	"github.com/gin-gonic/gin"
@@ -19,22 +20,21 @@ func NewControladorProducto(service paciente.Service) *Controlador {
 	}
 }
 
-func (c *Controlador) GetByID(ctx *gin.Context) {
+func (c *Controlador) GetByID() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
+			return
+		}
 
-	id, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		errors.New("Error linea 26")
-		return
+		paciente, err := c.service.GetByID(ctx, id)
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		web.Success(ctx, http.StatusOK, paciente)
 	}
-
-	paciente, err := c.service.GetByID(ctx, id)
-	if err != nil {
-		errors.New("Error linea 32")
-		return
-	}
-
-	ctx.IndentedJSON(http.StatusOK, gin.H{
-		"data": paciente,
-	})
 
 }

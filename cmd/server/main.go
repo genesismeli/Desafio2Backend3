@@ -1,17 +1,15 @@
 package main
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
-	"net/http"
+
+	"github.com/gin-gonic/gin"
+
+	// Alias para el paquete domain
 
 	pacienteHandler "github.com/genesismeli/Desafio2Backend3/cmd/server/handler/paciente"
 	pacienteModel "github.com/genesismeli/Desafio2Backend3/internal/domain/paciente"
-	"github.com/gin-gonic/gin"
-
-	// Alias para el paquete handler
-	// Alias para el paquete domain
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -29,21 +27,13 @@ func main() {
 
 	//egine
 	router := gin.New()
-	//PacientesGroup := router.Group("/pacientes")
+	PacientesGroup := router.Group("/pacientes")
 
 	pacienteDatabase := pacienteModel.NewRepositoryMySql(db)
 	pacienteService := pacienteModel.NewService(pacienteDatabase)
-	pacienteHandler1 := pacienteHandler.NewControladorProducto(pacienteService)
-	fmt.Print(pacienteHandler1)
+	controlador := pacienteHandler.NewControladorProducto(pacienteService)
 
-	ctx := context.Background()
-
-	pacientePrueba, _ := pacienteDatabase.GetByID(ctx, 3)
-
-	// Define la ruta GET para el endpoint "/"
-	router.GET("/pacientes/:id", func(c *gin.Context) {
-		c.IndentedJSON(http.StatusCreated, pacientePrueba)
-	})
+	PacientesGroup.GET("/:id", controlador.GetByID())
 
 	router.Run("localhost" + puerto)
 
