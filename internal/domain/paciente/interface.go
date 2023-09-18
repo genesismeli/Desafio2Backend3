@@ -14,7 +14,7 @@ var (
 )
 
 type Repository interface {
-	//Create(ctx context.Context, paciente Paciente) (Paciente, error)
+	Create(ctx context.Context, paciente Paciente) (Paciente, error)
 	GetByID(ctx context.Context, id int) (Paciente, error)
 	//Update(ctx context.Context, paciente Paciente) (Paciente, error)
 	//UpdateField(ctx context.Context, paciente Paciente) (Paciente, error)

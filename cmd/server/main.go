@@ -34,6 +34,7 @@ func main() {
 	controlador := pacienteHandler.NewControladorProducto(pacienteService)
 
 	PacientesGroup.GET("/:id", controlador.GetByID())
+	PacientesGroup.POST("/create", controlador.Create())
 
 	router.Run("localhost" + puerto)
 

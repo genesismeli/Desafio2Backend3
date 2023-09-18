@@ -35,3 +35,35 @@ func (r *repository) GetByID(ctx context.Context, id int) (Paciente, error) {
 
 	return paciente, nil
 }
+
+func (r *repository) Create(ctx context.Context, paciente Paciente) (Paciente, error) {
+
+	statement, err := r.db.Prepare("INSERT INTO pacientes (DNI, nombre, apellido, domicilio, fecha_alta) VALUES (?, ?, ?, ?, ?)")
+
+	if err != nil {
+		return Paciente{}, ErrStatement
+	}
+
+	defer statement.Close()
+
+	result, err := statement.Exec(
+		paciente.DNI,
+		paciente.Nombre,
+		paciente.Apellido,
+		paciente.Domicilio,
+		paciente.FechaAlta,
+	)
+
+	if err != nil {
+		return Paciente{}, ErrExec
+	}
+
+	lastID, err := result.LastInsertId()
+	if err != nil {
+		return Paciente{}, ErrLastId
+	}
+
+	paciente.ID = int(lastID)
+
+	return paciente, nil
+}

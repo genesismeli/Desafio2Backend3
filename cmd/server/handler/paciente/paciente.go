@@ -38,3 +38,28 @@ func (c *Controlador) GetByID() gin.HandlerFunc {
 	}
 
 }
+
+func (c *Controlador) Create() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var request paciente.RequestPaciente
+
+		err := ctx.Bind(&request)
+
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request")
+			return
+		}
+
+		paciente, err := c.service.Create(ctx, request)
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		web.Success(ctx, http.StatusOK, gin.H{
+			"data": paciente,
+		})
+
+	}
+}

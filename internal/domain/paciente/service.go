@@ -3,11 +3,13 @@ package paciente
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 )
 
 type Service interface {
 	GetByID(ctx context.Context, id int) (Paciente, error)
+	Create(ctx context.Context, requestPaciente RequestPaciente) (Paciente, error)
 }
 
 type service struct {
@@ -29,4 +31,27 @@ func (s *service) GetByID(ctx context.Context, id int) (Paciente, error) {
 	}
 
 	return paciente, nil
+}
+
+func (s *service) Create(ctx context.Context, requestPaciente RequestPaciente) (Paciente, error) {
+	paciente := requestToPaciente(requestPaciente)
+	pacienteReponse, err := s.repository.Create(ctx, paciente)
+
+	if err != nil {
+		log.Printf("Error en el servicio. Método CreatePaciente: %v", err)
+		return Paciente{}, fmt.Errorf("error en servicio. Método CreatePaciente: %v", err)
+	}
+
+	return pacienteReponse, nil
+}
+
+func requestToPaciente(request RequestPaciente) Paciente {
+	var paciente Paciente
+	paciente.Nombre = request.Nombre
+	paciente.Apellido = request.Apellido
+	paciente.Domicilio = request.Domicilio
+	paciente.DNI = request.DNI
+	paciente.FechaAlta = request.FechaAlta
+
+	return paciente
 }
