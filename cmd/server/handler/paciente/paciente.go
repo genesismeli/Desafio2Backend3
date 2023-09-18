@@ -63,3 +63,57 @@ func (c *Controlador) Create() gin.HandlerFunc {
 
 	}
 }
+
+func (c *Controlador) Update() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var request paciente.RequestPaciente
+
+		errBind := ctx.Bind(&request)
+
+		if errBind != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request binding")
+			return
+		}
+
+		id := ctx.Param("id")
+
+		idInt, err := strconv.Atoi(id)
+
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request param")
+			return
+		}
+
+		paciente, err := c.service.Update(ctx, request, idInt)
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		web.Success(ctx, http.StatusOK, gin.H{
+			"data": paciente,
+		})
+
+	}
+}
+
+func (c *Controlador) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
+			return
+		}
+
+		err = c.service.Delete(ctx, id)
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		web.Success(ctx, http.StatusOK, gin.H{
+			"mensaje": "paciente eliminado",
+		})
+	}
+}

@@ -35,6 +35,8 @@ func main() {
 
 	PacientesGroup.GET("/:id", controlador.GetByID())
 	PacientesGroup.POST("/create", controlador.Create())
+	PacientesGroup.PUT("/:id", controlador.Update())
+	PacientesGroup.DELETE("/:id", controlador.Delete())
 
 	router.Run("localhost" + puerto)
 

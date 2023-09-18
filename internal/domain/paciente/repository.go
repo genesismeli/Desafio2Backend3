@@ -67,3 +67,56 @@ func (r *repository) Create(ctx context.Context, paciente Paciente) (Paciente, e
 
 	return paciente, nil
 }
+
+func (r *repository) Update(ctx context.Context, paciente Paciente) (Paciente, error) {
+	statement, err := r.db.Prepare("UPDATE odontologos.pacientes SET DNI = ?, nombre = ?, apellido = ?, domicilio = ?, fecha_alta = ? WHERE id = ?")
+
+	if err != nil {
+		return Paciente{}, err
+	}
+
+	defer statement.Close()
+
+	result, err := statement.Exec(
+		paciente.DNI,
+		paciente.Nombre,
+		paciente.Apellido,
+		paciente.Domicilio,
+		paciente.FechaAlta,
+		paciente.ID,
+	)
+
+	if err != nil {
+		return Paciente{}, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return Paciente{}, err
+	}
+
+	if rowsAffected < 1 {
+		return Paciente{}, ErrNotFound
+	}
+
+	return paciente, nil
+}
+
+func (r *repository) Delete(ctx context.Context, id int) error {
+	result, err := r.db.Exec(`DELETE FROM odontologos.pacientes WHERE id = ?`, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected < 1 {
+		return ErrNotFound
+	}
+
+	return nil
+
+}
