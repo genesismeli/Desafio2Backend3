@@ -31,14 +31,14 @@ func (c *Controlador) GetByID() gin.HandlerFunc {
 			return
 		}
 
-		product, err := c.service.GetByID(ctx, id)
+		odontologo, err := c.service.GetByID(ctx, id)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
 		web.Success(ctx, http.StatusOK, gin.H{
-			"data": odonto,
+			"data": odontologo,
 		})
 	}
 }
@@ -104,14 +104,14 @@ func (c *Controlador) UpdateSubject() gin.HandlerFunc {
 			return
 		}
 
-		odonto, err := c.service.UpdateSubject(ctx, idInt, request)
+		odontologo, err := c.service.UpdateSubject(ctx, idInt, request)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
-		web.Succses(ctx, http.StatusOK, gin.H{
-			"data": odonto,
+		web.Success(ctx, http.StatusOK, gin.H{
+			"data": odontologo,
 		})
 
 	}
