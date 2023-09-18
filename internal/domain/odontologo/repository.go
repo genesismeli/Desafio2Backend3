@@ -25,7 +25,7 @@ type repository struct {
 }
 
 func NewRepositoryMySql(db *sql.DB) Repository {
-	return &  repository{
+	return &repository {
 		db: db,
 	}
 }
@@ -44,7 +44,7 @@ func (r *repository) Create(ctx context.Context, odontologo Odontologo) (Odontol
 	result, err := statement.Exec(
 		odontologo.Matricula,
 		odontologo.Apellido,
-		odontologo.Nombre
+		odontologo.Nombre,
 		
 		
 	)
@@ -72,7 +72,7 @@ func (r *repository) GetByID(ctx context.Context, id int) (Odontologo, error) {
 		&odontologo.ID,
 		&odontologo.Matricula,
 		&odontologo.Apellido,
-		&odontologo.Name
+		&odontologo.Name,
 		
 		
 	)
