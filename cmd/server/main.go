@@ -1,13 +1,17 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"net/http"
 
-	// Alias para el paquete handler
-	pacientemodel "github.com/genesismeli/Desafio2Backend3/internal/domain/paciente" // Alias para el paquete domain
+	pacienteHandler "github.com/genesismeli/Desafio2Backend3/cmd/server/handler/paciente"
+	pacienteModel "github.com/genesismeli/Desafio2Backend3/internal/domain/paciente"
 	"github.com/gin-gonic/gin"
+
+	// Alias para el paquete handler
+	// Alias para el paquete domain
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -23,29 +27,26 @@ func main() {
 	db := connectDB()
 	defer db.Close() // Cierra la conexión a la base de datos al finalizar la función main.
 
-	var paciente pacientemodel.Paciente
-	sql := "SELECT * FROM odontologos.pacientes where id=?"
-
-	db.QueryRow(sql, "2").Scan(
-		&paciente.ID,
-		&paciente.Nombre,
-		&paciente.Apellido,
-		&paciente.Domicilio,
-		&paciente.DNI,
-		&paciente.FechaAlta,
-	)
-
-	fmt.Println(paciente)
-
-	// Iniciar el engine
+	//egine
 	router := gin.New()
+	//PacientesGroup := router.Group("/pacientes")
+
+	pacienteDatabase := pacienteModel.NewRepositoryMySql(db)
+	pacienteService := pacienteModel.NewService(pacienteDatabase)
+	pacienteHandler1 := pacienteHandler.NewControladorProducto(pacienteService)
+	fmt.Print(pacienteHandler1)
+
+	ctx := context.Background()
+
+	pacientePrueba, _ := pacienteDatabase.GetByID(ctx, 3)
 
 	// Define la ruta GET para el endpoint "/"
 	router.GET("/pacientes/:id", func(c *gin.Context) {
-		c.IndentedJSON(http.StatusCreated, paciente)
+		c.IndentedJSON(http.StatusCreated, pacientePrueba)
 	})
 
 	router.Run("localhost" + puerto)
+
 }
 func connectDB() *sql.DB {
 	var dbUsername, dbPassword, dbHost, dbPort, dbName string
