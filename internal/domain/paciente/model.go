@@ -1,3 +1,5 @@
+package paciente
+
 import "time"
 
 type Paciente struct {
@@ -19,9 +21,9 @@ type RequestPaciente struct {
 
 type RequestPaciente2 struct {
 	ID        *int       `json:"id"`
-	Nombre    string     `json:"nombre"`
-	Apellido  string     `json:"apellido"`
-	Domicilio string     `json:"domicilio"`
+	Nombre    *string    `json:"nombre"`
+	Apellido  *string    `json:"apellido"`
+	Domicilio *string    `json:"domicilio"`
 	DNI       string     `json:"dni"`
 	FechaAlta *time.Time `json:"fecha_alta"`
 }
