@@ -32,7 +32,7 @@ func (s *service) Create(ctx context.Context, requestOdontologo RequestOdontolog
 	response, err := s.repository.Create(ctx, odontologo)
 	if err != nil {
 		log.Println("Error en crear odontologo")
-		return Odontologo{}, errors.New("Error en crear odontologo")
+		return Odontologo{}, errors.New("error en crear odontologo")
 	}
 
 	return response, nil
@@ -43,7 +43,7 @@ func (s *service) GetByID(ctx context.Context, id int) (Odontologo, error) {
 	odontologo, err := s.repository.GetByID(ctx, id)
 	if err != nil {
 		log.Println("Error en el metodo GetByID", err.Error())
-		return Odontologo{}, errors.New("Error en el metodo GetByID")
+		return Odontologo{}, errors.New("error en el metodo GetByID")
 	}
 
 	return odontologo, nil
@@ -57,7 +57,7 @@ func (s *service) Update(ctx context.Context, requestOdontologo RequestOdontolog
 	response, err := s.repository.Update(ctx, odontologo)
 	if err != nil {
 		log.Println("Error en el metodo de update de odontologo", err.Error())
-		return Odontologo{}, errors.New("Error en el metodo de update de odontologo")
+		return Odontologo{}, errors.New("error en el metodo de update de odontologo")
 	}
 
 	return response, nil
@@ -79,7 +79,7 @@ func (s *service) Delete(ctx context.Context, id int) error {
 	err := s.repository.Delete(ctx, id)
 	if err != nil {
 		log.Println("Error en el service Odontologo: Método Delete", err.Error())
-		return errors.New("Error en service: Método Delete")
+		return errors.New("error en service: Método Delete")
 	}
 
 	return nil

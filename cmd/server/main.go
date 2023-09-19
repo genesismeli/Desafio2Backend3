@@ -6,12 +6,14 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	// Alias para el paquete domain
+	pacienteHandler "github.com/genesismeli/Desafio2Backend3/cmd/server/handler/paciente"
+	pacienteModel "github.com/genesismeli/Desafio2Backend3/internal/domain/paciente"
 
-	odontologoHandler "github.com/genesismeli/Desafio2Backend3/cmd/server/handler/odontologo"
-	odontologoModel "github.com/genesismeli/Desafio2Backend3/internal/domain/odontologo"
+	"log"
 
+	"github.com/genesismeli/Desafio2Backend3/core/middleware"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 const (
@@ -20,26 +22,29 @@ const (
 )
 
 func main() {
-	fmt.Println("¡Hola, mundo!")
-	// Connect to the database.
+
+	//utilizamos la librería godotenv, con esto recorremos las variables del archivo .env y las setean en el environment.
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	db := connectDB()
 	defer db.Close() // Cierra la conexión a la base de datos al finalizar la función main.
 
 	//egine
 	router := gin.New()
-	OdontologoGroup := router.Group("/odontologos")
+	PacientesGroup := router.Group("/pacientes")
 
-	odontologoDatabase := odontologoModel.NewRepositoryMySql(db)
-	odontologoService := odontologoModel.NewService(odontologoDatabase)
-	controlador := odontologoHandler.NewControladorOdontologo(odontologoService)
+	pacienteDatabase := pacienteModel.NewRepositoryMySql(db)
+	pacienteService := pacienteModel.NewService(pacienteDatabase)
+	controlador := pacienteHandler.NewControladorProducto(pacienteService)
 
-	OdontologoGroup.POST("/create", controlador.Create())
-	OdontologoGroup.GET("/:id", controlador.GetByID())
-	OdontologoGroup.PUT("/:id", controlador.Update())
-	OdontologoGroup.PATCH("/:id", controlador.UpdateSubject())
-	OdontologoGroup.DELETE("/:id", controlador.Delete())
-
-
+	PacientesGroup.GET("/:id", middleware.Authenticate(), controlador.GetByID())
+	PacientesGroup.POST("/create", controlador.Create())
+	PacientesGroup.PUT("/:id", controlador.Update())
+	PacientesGroup.DELETE("/:id", controlador.Delete())
+	PacientesGroup.PATCH("/patch/:id", controlador.UpdateField())
 
 	router.Run("localhost" + puerto)
 
@@ -49,7 +54,7 @@ func connectDB() *sql.DB {
 	dbUsername = "root"
 	dbPassword = "admin1234"
 	dbHost = "localhost"
-	dbPort = "3306"
+	dbPort = "33060"
 	dbName = "odontologos"
 
 	// Create the data source.
