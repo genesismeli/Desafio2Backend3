@@ -16,7 +16,7 @@ type Service interface {
 	GetByID(ctx context.Context, id int) (Odontologo, error)
 	Update(ctx context.Context, requestOdontologo RequestOdontologo, id int) (Odontologo, error)
 	Delete(ctx context.Context, id int) error
-	UpdateSubject(ctx context.Context, id int, nombreNuevo RequestUpdateOdontologoSubject) (Odontologo, error)
+	UpdateField(ctx context.Context, requestPaciente2 RequestOdontologo2, id int) (Odontologo, error)
 }
 
 
@@ -63,15 +63,24 @@ func (s *service) Update(ctx context.Context, requestOdontologo RequestOdontolog
 	return response, nil
 }
 
-// Update actualiza alguno de los campos de odontologo
-func (s *service) UpdateSubject(ctx context.Context, id int, request RequestUpdateOdontologoSubject) (Odontologo, error) {
+func (s *service) UpdateField(ctx context.Context, requestOdontologo2 RequestOdontologo2, id int) (Odontologo, error) {
 
-	response, err := s.repository.UpdateSubject(ctx, id, request)
+	pacienteFromDB, err := s.repository.GetByID(ctx, id)
+	if err != nil {
+		log.Println("Error en servicio de odontologo:", err.Error())
+		return Odontologo{}, errors.New("error en servicio. Metodo GetByID desde updateFild")
+	}
+
+	paciente := requestToOdontologo2(requestOdontologo2, pacienteFromDB)
+
+	response, err := s.repository.Update(ctx, paciente)
 	if err != nil {
 		log.Println("log de error en service de odontologo", err.Error())
-		return Odontologo{}, errors.New("error en servicio. Metodo UpdateName")
+		return Odontologo{}, errors.New("error en servicio. Metodo Update")
 	}
+
 	return response, nil
+
 }
 
 // Funcion para eliminar odontologo
@@ -93,4 +102,21 @@ func requestToOdontologo(requestOdontologo RequestOdontologo) Odontologo {
 	
 	return odontologo
 
+}
+
+func requestToOdontologo2(userReq RequestOdontologo2, odontologo Odontologo) Odontologo {
+
+	if userReq.Nombre != nil {
+		odontologo.Nombre = *userReq.Nombre
+	}
+
+	if userReq.Apellido != nil {
+		odontologo.Apellido = *userReq.Apellido
+	}
+
+	if userReq.Matricula != nil {
+		odontologo.Matricula = *userReq.Matricula
+	}
+
+	return odontologo
 }

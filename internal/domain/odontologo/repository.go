@@ -19,7 +19,7 @@ type Repository interface {
 	GetByID(ctx context.Context, id int) (Odontologo, error)
 	Update(ctx context.Context, odontologo Odontologo) (Odontologo, error)
 	Delete(ctx context.Context, id int) error
-	UpdateSubject(ctx context.Context, id int, request RequestUpdateOdontologoSubject) (Odontologo, error)
+	
 }
 
 type repository struct {
@@ -116,43 +116,6 @@ func (r *repository) Update(ctx context.Context, odontologo Odontologo) (Odontol
 	}
 
 	return odontologo, nil
-}
-
-
-// Actualiza alguno de los campos de odontologo
-func (r *repository) UpdateSubject(ctx context.Context, id int, request RequestUpdateOdontologoSubject) (Odontologo, error) {
-
-	statement, err := r.db.Prepare(QueryUpdateOdontologoNombre + request.key + " = ? WHERE ID = ?")
-	if err != nil {
-		return Odontologo{}, err
-	}
-
-	defer statement.Close()
-
-	result, err := statement.Exec(
-		request.value,
-		id,
-	)
-
-	if err != nil {
-		return Odontologo{}, err
-	}
-
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		return Odontologo{}, err
-	}
-
-	if rowsAffected < 1 {
-		return Odontologo{}, ErrNotFound
-	}
-
-	odontologoActualizado, err := r.GetByID(ctx, id)
-	if err != nil {
-		return Odontologo{}, err
-	}
-
-	return odontologoActualizado, nil
 }
 
 // elimina odontologo

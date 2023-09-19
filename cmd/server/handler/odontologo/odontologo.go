@@ -128,24 +128,28 @@ func (c *Controlador) Update() gin.HandlerFunc {
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /odontologos/:id [patch]
-func (c *Controlador) UpdateSubject() gin.HandlerFunc {
+func (c *Controlador) UpdateField() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		var request odontologo.RequestUpdateOdontologoSubject
-		errBind := ctx.Bind(&request)
+		var request odontologo.RequestOdontologo2
+
+		errBind := ctx.BindJSON(&request)
+
 		if errBind != nil {
-			web.Error(ctx, http.StatusBadRequest, "%s", "bad request")
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request binding")
 			return
 		}
 
 		id := ctx.Param("id")
+
 		idInt, err := strconv.Atoi(id)
+
 		if err != nil {
 			web.Error(ctx, http.StatusBadRequest, "%s", "bad request param")
 			return
 		}
 
-		odontologo, err := c.service.UpdateSubject(ctx, idInt, request)
+		odontologo, err := c.service.UpdateField(ctx, request, idInt)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
