@@ -8,7 +8,8 @@ import (
 
 	pacienteHandler "github.com/genesismeli/Desafio2Backend3/cmd/server/handler/paciente"
 	pacienteModel "github.com/genesismeli/Desafio2Backend3/internal/domain/paciente"
-
+	odontologoHandler "github.com/genesismeli/Desafio2Backend3/cmd/server/handler/odontologo"
+	odontologoModel "github.com/genesismeli/Desafio2Backend3/internal/domain/odontologo"
 	"log"
 
 	"github.com/genesismeli/Desafio2Backend3/core/middleware"
@@ -29,22 +30,38 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Conección a la base de datos
 	db := connectDB()
 	defer db.Close() // Cierra la conexión a la base de datos al finalizar la función main.
 
 	//egine
 	router := gin.New()
+
+	// Router Group para odontologos
+	OdontologoGroup := router.Group("/odontologos")
+
+	odontologoDatabase := odontologoModel.NewRepositoryMySql(db)
+	odontologoService := odontologoModel.NewService(odontologoDatabase)
+	controladorOdontologo := odontologoHandler.NewControladorOdontologo(odontologoService)
+
+	OdontologoGroup.POST("/create", controladorOdontologo.Create())
+	OdontologoGroup.GET("/:id", controladorOdontologo.GetByID())
+	OdontologoGroup.PUT("/:id", controladorOdontologo.Update())
+	OdontologoGroup.PATCH("/:id", controladorOdontologo.UpdateSubject())
+	OdontologoGroup.DELETE("/:id", controladorOdontologo.Delete())
+
+	// Router Group para pacientes
 	PacientesGroup := router.Group("/pacientes")
 
 	pacienteDatabase := pacienteModel.NewRepositoryMySql(db)
 	pacienteService := pacienteModel.NewService(pacienteDatabase)
-	controlador := pacienteHandler.NewControladorProducto(pacienteService)
+	controladorPaciente := pacienteHandler.NewControladorProducto(pacienteService)
 
-	PacientesGroup.GET("/:id", middleware.Authenticate(), controlador.GetByID())
-	PacientesGroup.POST("/create", controlador.Create())
-	PacientesGroup.PUT("/:id", controlador.Update())
-	PacientesGroup.DELETE("/:id", controlador.Delete())
-	PacientesGroup.PATCH("/patch/:id", controlador.UpdateField())
+	PacientesGroup.GET("/:id", middleware.Authenticate(), controladorPaciente.GetByID())
+	PacientesGroup.POST("/create", controladorPaciente.Create())
+	PacientesGroup.PUT("/:id", controladorPaciente.Update())
+	PacientesGroup.DELETE("/:id", controladorPaciente.Delete())
+	PacientesGroup.PATCH("/patch/:id", controladorPaciente.UpdateField())
 
 	router.Run("localhost" + puerto)
 
