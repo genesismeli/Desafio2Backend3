@@ -18,6 +18,7 @@ type Repository interface {
 	GetByID(ctx context.Context, id int) (Paciente, error)
 	Update(ctx context.Context, paciente Paciente) (Paciente, error)
 	Delete(ctx context.Context, id int) error
+	//UpdateField(ctx context.Context, paciente Paciente) (Paciente, error)
 	//Update(ctx context.Context, paciente Paciente) (Paciente, error)
 	//UpdateField(ctx context.Context, paciente Paciente) (Paciente, error)
 	//Delete(ctx context.Context, id int) error
