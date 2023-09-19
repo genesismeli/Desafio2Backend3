@@ -24,3 +24,13 @@ type RequestUpdateOdontologoSubject struct {
 	key string `query:"key"`
 	value string `query:"value"`
 }
+
+type RequestOdontologo2 struct {
+	ID        *int       `json:"id"`
+	Matricula *string     `json:"matricula"`
+	Apellido  *string    `json:"apellido"`
+	Nombre    *string    `json:"nombre"`
+	
+	
+	
+}
