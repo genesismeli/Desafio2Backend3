@@ -27,7 +27,7 @@ ADD UNIQUE INDEX dentistas_id_unique (id);
 -- Crear la tabla paciente
 CREATE TABLE IF NOT EXISTS pacientes (
   id INT NOT NULL AUTO_INCREMENT,
-  DNI VARCHAR(20) NOT NULL,
+  DNI VARCHAR(50) NOT NULL,
   nombre VARCHAR(50) NOT NULL,
   apellido VARCHAR(50) NOT NULL,
   domicilio VARCHAR(100) NOT NULL,
@@ -47,12 +47,12 @@ CREATE TABLE IF NOT EXISTS turnos (
   fecha_hora DATETIME NOT NULL,
   descripcion VARCHAR(1000),
   PRIMARY KEY (id),
-  FOREIGN KEY (dentista_matricula) REFERENCES dentistas(matricula) ON DELETE CASCADE,
-  FOREIGN KEY (paciente_DNI) REFERENCES pacientes(DNI) ON DELETE CASCADE
+  FOREIGN KEY (dentista_matricula) REFERENCES dentistas(matricula) ON DELETE CASCADE  ON UPDATE CASCADE,
+  FOREIGN KEY (paciente_DNI) REFERENCES pacientes(DNI) ON DELETE CASCADE  ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Insertar datos ficticios en la tabla dentistas 
-INSERT INTO dentistas (matricula, apellido, nombre)
+INSERT INTO dentistas (matricula, apellido, nombre) 
 VALUES
   ('12345', 'Pérez', 'Juan'),
   ('67890', 'González', 'María'),

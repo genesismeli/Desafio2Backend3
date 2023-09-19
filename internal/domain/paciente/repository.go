@@ -22,10 +22,10 @@ func (r *repository) GetByID(ctx context.Context, id int) (Paciente, error) {
 	var paciente Paciente
 	err := row.Scan(
 		&paciente.ID,
+		&paciente.DNI,
 		&paciente.Nombre,
 		&paciente.Apellido,
 		&paciente.Domicilio,
-		&paciente.DNI,
 		&paciente.FechaAlta,
 	)
 
