@@ -59,7 +59,7 @@ func main() {
 	OdontologoGroup.GET("/:id", controladorOdontologo.GetByID())
 	OdontologoGroup.POST("/create",middleware.Authenticate(), controladorOdontologo.Create())
 	OdontologoGroup.PUT("/:id",middleware.Authenticate(), controladorOdontologo.Update())
-	OdontologoGroup.PATCH("/:id",middleware.Authenticate(), controladorOdontologo.UpdateField())
+	OdontologoGroup.PATCH("/patch/:id",middleware.Authenticate(), controladorOdontologo.UpdateField())
 	OdontologoGroup.DELETE("/:id",middleware.Authenticate(), controladorOdontologo.Delete())
 
 	// Router Group para pacientes
@@ -81,11 +81,11 @@ func main() {
 	turnoDatabase := turnoModel.NewRepositoryMySql(db)
 	turnoService := turnoModel.NewService(turnoDatabase)
 	controladorTurno := turnoHandler.NewControladorProducto(turnoService)
-	turnosGroup.GET("/", controladorTurno.GetByID())
-	turnosGroup.POST("/",middleware.Authenticate(), controladorTurno.Create())
-	turnosGroup.PUT("/",middleware.Authenticate(), controladorTurno.Update())
-	turnosGroup.PATCH("/",middleware.Authenticate(), controladorTurno.UpdateField())
-	turnosGroup.DELETE("/",middleware.Authenticate(), controladorTurno.Delete())
+	turnosGroup.GET("/:id", controladorTurno.GetByID())
+	turnosGroup.POST("/create",middleware.Authenticate(), controladorTurno.Create())
+	turnosGroup.PUT("/:id",middleware.Authenticate(), controladorTurno.Update())
+	turnosGroup.PATCH("/patch/:id",middleware.Authenticate(), controladorTurno.UpdateField())
+	turnosGroup.DELETE("/:id",middleware.Authenticate(), controladorTurno.Delete())
 
 
 	router.Run("localhost" + puerto)
