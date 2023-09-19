@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS pacientes (
   nombre VARCHAR(50) NOT NULL,
   apellido VARCHAR(50) NOT NULL,
   domicilio VARCHAR(100) NOT NULL,
-  fecha_alta DATE NOT NULL,
+  fecha_alta DATE NOT NULL,  
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS turnos (
   dentista_matricula VARCHAR(50) NOT NULL,
   paciente_DNI VARCHAR(20) NOT NULL,
   fecha_hora DATETIME NOT NULL,
+  descripcion VARCHAR(1000),
   PRIMARY KEY (id),
   FOREIGN KEY (dentista_matricula) REFERENCES dentistas(matricula) ON DELETE CASCADE,
   FOREIGN KEY (paciente_DNI) REFERENCES pacientes(DNI) ON DELETE CASCADE
@@ -70,5 +71,11 @@ VALUES
   ('12345', '111111', '2023-09-16 10:00:00'),
   ('67890', '222222', '2023-09-17 14:30:00'),
   ('54321', '333333', '2023-09-18 09:15:00');
+
+  -- Insertar dos turnos adicionales en la tabla turnos con descripción
+INSERT INTO turnos (dentista_matricula, paciente_DNI, fecha_hora, descripcion)
+VALUES
+  ('12345', '111111', '2023-09-19 11:30:00', 'Revisión anual'),
+  ('67890', '222222', '2023-09-20 15:00:00', 'Limpieza y consulta');
   
   select * from pacientes;
