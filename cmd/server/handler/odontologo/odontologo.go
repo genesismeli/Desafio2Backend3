@@ -1,4 +1,5 @@
 package odontologo
+<<<<<<< HEAD
 
 import (
 	"net/http"
@@ -138,3 +139,5 @@ func (c *Controlador) Delete() gin.HandlerFunc {
 		})
 	}
 }
+=======
+>>>>>>> securityLeandro

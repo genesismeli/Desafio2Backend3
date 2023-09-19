@@ -1,6 +1,7 @@
 package main
 
 import (
+
 	"database/sql"
 	"fmt"
 
@@ -12,6 +13,7 @@ import (
 	pacienteModel "github.com/genesismeli/Desafio2Backend3/internal/domain/paciente"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 const (
@@ -20,7 +22,12 @@ const (
 )
 
 func main() {
-	fmt.Println("¡Hola, mundo!")
+	
+	//utilizamos la librería godotenv, con esto recorremos las variables del archivo .env y las setean en el environment.
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Connect to the database.
 	db := connectDB()
 	defer db.Close() // Cierra la conexión a la base de datos al finalizar la función main.
