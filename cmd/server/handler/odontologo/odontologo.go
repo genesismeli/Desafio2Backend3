@@ -1,11 +1,11 @@
 package odontologo
 
 import (
-	"net/http"
-	"strconv"
 	"github.com/genesismeli/Desafio2Backend3/core/web"
 	"github.com/genesismeli/Desafio2Backend3/internal/domain/odontologo"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"strconv"
 )
 
 type Controlador struct {
@@ -17,7 +17,6 @@ func NewControladorOdontologo(service odontologo.Service) *Controlador {
 		service: service,
 	}
 }
-
 
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
@@ -42,7 +41,6 @@ func (c *Controlador) GetByID() gin.HandlerFunc {
 		})
 	}
 }
-
 
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
@@ -82,7 +80,6 @@ func (c *Controlador) Update() gin.HandlerFunc {
 	}
 }
 
-
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
@@ -116,7 +113,6 @@ func (c *Controlador) UpdateSubject() gin.HandlerFunc {
 
 	}
 }
-
 
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
