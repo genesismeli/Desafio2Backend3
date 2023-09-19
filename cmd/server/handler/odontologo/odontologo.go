@@ -19,7 +19,13 @@ func NewControladorOdontologo(service odontologo.Service) *Controlador {
 	}
 }
 
-
+// Summary Post odontologo.
+// @Tags  domain.odontologo
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos/create [post]
 func (c *Controlador) Create() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -45,7 +51,10 @@ func (c *Controlador) Create() gin.HandlerFunc {
 	}
 }
 
-// @Success 200 {object} web.response
+// Summary Get odontologo.
+// @Tags  domain.odontologo
+// @Produce json
+// @Success 200 {object} web.Response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /odontologos/:id [get]
@@ -70,7 +79,10 @@ func (c *Controlador) GetByID() gin.HandlerFunc {
 }
 
 
-// @Success 200 {object} web.response
+// Summary Put odontologo.
+// @Tags  domain.odontologo
+// @Produce json
+// @Success 200 {object} web.Response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /odontologos/:id [put]
@@ -109,7 +121,10 @@ func (c *Controlador) Update() gin.HandlerFunc {
 }
 
 
-// @Success 200 {object} web.response
+// Summary Patch odontologo.
+// @Tags  domain.odontologo
+// @Produce json
+// @Success 200 {object} web.Response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /odontologos/:id [patch]
@@ -144,9 +159,12 @@ func (c *Controlador) UpdateSubject() gin.HandlerFunc {
 }
 
 
-// @Success 200 {object} web.response
-// @Failure 400 {object} web.errorResponse
-// @Failure 500 {object} web.errorResponse
+// Summary Delete odontologo.
+// @Tags  domain.odontologo
+// @Produce json
+// @Success 200 web.Response
+// @Failure 400 web.errorResponse
+// @Failure 500 web.errorResponse
 // @Router /odontologos/:id [delete]
 func (c *Controlador) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {

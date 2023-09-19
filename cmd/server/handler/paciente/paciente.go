@@ -22,8 +22,10 @@ func NewControladorProducto(service paciente.Service) *Controlador {
 // Summary Get paciente.
 // @Tags  domain.paciente
 // @Produce json
-// @Success 200 {object} web.Responses
-// @Router /pacientes/{id} [get]
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/:id [get]
 func (c *Controlador) GetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -42,7 +44,13 @@ func (c *Controlador) GetByID() gin.HandlerFunc {
 	}
 
 }
-
+// Summary Post paciente.
+// @Tags  domain.paciente
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/create [get]
 func (c *Controlador) Create() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -67,7 +75,13 @@ func (c *Controlador) Create() gin.HandlerFunc {
 
 	}
 }
-
+// Summary Put paciente.
+// @Tags  domain.paciente
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/:id [put]
 func (c *Controlador) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -101,7 +115,13 @@ func (c *Controlador) Update() gin.HandlerFunc {
 
 	}
 }
-
+// Summary Delete paciente.
+// @Tags  domain.paciente
+// @Produce json
+// @Success 200 web.Response
+// @Failure 400 web.errorResponse
+// @Failure 500 web.errorResponse
+// @Router /pacientes/:id [delete]
 func (c *Controlador) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -122,6 +142,13 @@ func (c *Controlador) Delete() gin.HandlerFunc {
 	}
 }
 
+// Summary Patch paciente.
+// @Tags  domain.paciente
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/patch/:id [patch]
 func (c *Controlador) UpdateField() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 

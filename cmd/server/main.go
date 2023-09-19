@@ -24,16 +24,16 @@ const (
 	puerto = ":9090"
 )
 
-// @title Desafío backend 2
+// @title Desafío integrador  
 // @version 1.0
-// @description 
-// @termsOfService
+// @description Sistema de reserva de turnos para odontologos y pacientes
+// @termsOfService 
 
-// @contact.name
-// @contact.url
+// @contact.name equipo 10
+// @contact.url	https://github.com/genesismeli/Desafio2Backend3	
 
-// @license.name asdfasdf
-// @license.url 
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 
 	//utilizamos la librería godotenv, con esto recorremos las variables del archivo .env y las setean en el environment.
