@@ -24,6 +24,16 @@ const (
 	puerto = ":9090"
 )
 
+// @title Desafío backend 2
+// @version 1.0
+// @description 
+// @termsOfService
+
+// @contact.name
+// @contact.url
+
+// @license.name asdfasdf
+// @license.url 
 func main() {
 
 	//utilizamos la librería godotenv, con esto recorremos las variables del archivo .env y las setean en el environment.
