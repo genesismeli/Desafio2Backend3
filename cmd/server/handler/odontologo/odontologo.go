@@ -1,18 +1,12 @@
 package odontologo
-<<<<<<< HEAD
 
 import (
-<<<<<<< HEAD
-=======
 	"net/http"
 	"strconv"
 
->>>>>>> 8452c61c3db9073d2fb57a94b640edc38b42eee8
 	"github.com/genesismeli/Desafio2Backend3/core/web"
 	"github.com/genesismeli/Desafio2Backend3/internal/domain/odontologo"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"strconv"
 )
 
 type Controlador struct {
@@ -22,6 +16,31 @@ type Controlador struct {
 func NewControladorOdontologo(service odontologo.Service) *Controlador {
 	return &Controlador{
 		service: service,
+	}
+}
+
+func (c *Controlador) Create() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var request odontologo.RequestOdontologo
+
+		err := ctx.Bind(&request)
+
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request")
+			return
+		}
+
+		odontologo, err := c.service.Create(ctx, request)
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		web.Success(ctx, http.StatusOK, gin.H{
+			"data": odontologo,
+		})
+
 	}
 }
 
@@ -37,14 +56,14 @@ func (c *Controlador) GetByID() gin.HandlerFunc {
 			return
 		}
 
-		product, err := c.service.GetByID(ctx, id)
+		odontologo, err := c.service.GetByID(ctx, id)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
 		web.Success(ctx, http.StatusOK, gin.H{
-			"data": odonto,
+			"data": odontologo,
 		})
 	}
 }
@@ -108,14 +127,14 @@ func (c *Controlador) UpdateSubject() gin.HandlerFunc {
 			return
 		}
 
-		odonto, err := c.service.UpdateSubject(ctx, idInt, request)
+		odontologo, err := c.service.UpdateSubject(ctx, idInt, request)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
-		web.Succses(ctx, http.StatusOK, gin.H{
-			"data": odonto,
+		web.Success(ctx, http.StatusOK, gin.H{
+			"data": odontologo,
 		})
 
 	}
@@ -144,8 +163,3 @@ func (c *Controlador) Delete() gin.HandlerFunc {
 		})
 	}
 }
-<<<<<<< HEAD
-=======
-=======
->>>>>>> securityLeandro
->>>>>>> 8452c61c3db9073d2fb57a94b640edc38b42eee8
