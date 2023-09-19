@@ -38,7 +38,7 @@ func (s *service) Create(ctx context.Context, requestOdontologo RequestOdontolog
 	return response, nil
 }
 
-// Funcion que devuelve el odontologo byscado por ID
+// Funcion que devuelve el odontologo buscado por ID
 func (s *service) GetByID(ctx context.Context, id int) (Odontologo, error) {
 	odontologo, err := s.repository.GetByID(ctx, id)
 	if err != nil {

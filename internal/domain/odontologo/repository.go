@@ -28,7 +28,7 @@ type repository struct {
 }
 
 func NewRepositoryMySql(db *sql.DB) Repository {
-	return &  repository{
+	return &repository {
 		db: db,
 	}
 }
@@ -173,5 +173,4 @@ func (r *repository) Delete(ctx context.Context, id int) error {
 	}
 
 	return nil
-
 }

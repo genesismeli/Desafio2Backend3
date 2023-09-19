@@ -23,7 +23,8 @@ func Response(c *gin.Context, status int, data interface{}) {
 }
 
 func Success(c *gin.Context, status int, data interface{}) {
-	Response(c, status, response{data})
+	Response(c, status, response{Data: data})
+
 }
 
 // NewErrorf creates a new error with the given status code and the message
