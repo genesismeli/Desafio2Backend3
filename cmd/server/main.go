@@ -59,7 +59,7 @@ func main() {
 	OdontologoGroup.GET("/:id", controladorOdontologo.GetByID())
 	OdontologoGroup.POST("/create",middleware.Authenticate(), controladorOdontologo.Create())
 	OdontologoGroup.PUT("/:id",middleware.Authenticate(), controladorOdontologo.Update())
-	OdontologoGroup.PATCH("/:id",middleware.Authenticate(), controladorOdontologo.UpdateSubject())
+	OdontologoGroup.PATCH("/:id",middleware.Authenticate(), controladorOdontologo.UpdateField())
 	OdontologoGroup.DELETE("/:id",middleware.Authenticate(), controladorOdontologo.Delete())
 
 	// Router Group para pacientes
