@@ -1,6 +1,13 @@
 package odontologo
+<<<<<<< HEAD
 
 import (
+<<<<<<< HEAD
+=======
+	"net/http"
+	"strconv"
+
+>>>>>>> 8452c61c3db9073d2fb57a94b640edc38b42eee8
 	"github.com/genesismeli/Desafio2Backend3/core/web"
 	"github.com/genesismeli/Desafio2Backend3/internal/domain/odontologo"
 	"github.com/gin-gonic/gin"
@@ -137,3 +144,8 @@ func (c *Controlador) Delete() gin.HandlerFunc {
 		})
 	}
 }
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> securityLeandro
+>>>>>>> 8452c61c3db9073d2fb57a94b640edc38b42eee8
