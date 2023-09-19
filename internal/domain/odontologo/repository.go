@@ -11,7 +11,6 @@ var (
 	ErrStatement = errors.New("statement error")
     ErrExec      = errors.New("execution error")
     ErrLastId    = errors.New("last ID error")
-
 )
 
 
