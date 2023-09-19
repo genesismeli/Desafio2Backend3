@@ -72,7 +72,7 @@ func (r *repository) GetByID(ctx context.Context, id int) (Odontologo, error) {
 		&odontologo.ID,
 		&odontologo.Matricula,
 		&odontologo.Apellido,
-		&odontologo.Name,
+		&odontologo.Nombre,
 		
 		
 	)
@@ -170,5 +170,4 @@ func (r *repository) Delete(ctx context.Context, id int) error {
 	}
 
 	return nil
-
 }
