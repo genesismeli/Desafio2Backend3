@@ -19,7 +19,11 @@ func NewControladorProducto(service paciente.Service) *Controlador {
 		service: service,
 	}
 }
-
+// Summary Get paciente.
+// @Tags  domain.paciente
+// @Produce json
+// @Success 200 {object} web.Responses
+// @Router /pacientes/{id} [get]
 func (c *Controlador) GetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))

@@ -17,13 +17,13 @@ func NewRepositoryMySql(db *sql.DB) Repository {
 }
 
 func (r *repository) GetByID(ctx context.Context, id int) (Turno, error) {
-	row := r.db.QueryRow("SELECT * FROM odontologos.pacientes where id=?", id)
+	row := r.db.QueryRow("SELECT * FROM odontologos.turnos where id=?", id)
 
 	var turno Turno
 	err := row.Scan(
 		&turno.ID,
-		&turno.Paciente,
-		&turno.Odontologo,
+		&turno.Paciente.DNI,
+		&turno.Odontologo.Matricula,
 		&turno.FechaHora,
 		&turno.Descripcion,
 	)
@@ -67,7 +67,7 @@ func (r *repository) Create(ctx context.Context, turno Turno) (Turno, error) {
 }
 
 func (r *repository) Update(ctx context.Context, turno Turno) (Turno, error) {
-	statement, err := r.db.Prepare("UPDATE odontologos.pacientes SET paciente = ?, odontologo = ?, fechaHora = ?, descripcion = ? WHERE id = ?")
+	statement, err := r.db.Prepare("UPDATE odontologos.turnos SET paciente = ?, odontologo = ?, fechaHora = ?, descripcion = ? WHERE id = ?")
 
 	if err != nil {
 		return Turno{}, err
