@@ -1,17 +1,17 @@
 package main
 
 import (
-
 	"database/sql"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
 
-	// Alias para el paquete domain
-
 	pacienteHandler "github.com/genesismeli/Desafio2Backend3/cmd/server/handler/paciente"
 	pacienteModel "github.com/genesismeli/Desafio2Backend3/internal/domain/paciente"
 
+	"log"
+
+	"github.com/genesismeli/Desafio2Backend3/core/middleware"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 )
@@ -22,13 +22,13 @@ const (
 )
 
 func main() {
-	
+
 	//utilizamos la librería godotenv, con esto recorremos las variables del archivo .env y las setean en el environment.
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Connect to the database.
+
 	db := connectDB()
 	defer db.Close() // Cierra la conexión a la base de datos al finalizar la función main.
 
@@ -40,7 +40,7 @@ func main() {
 	pacienteService := pacienteModel.NewService(pacienteDatabase)
 	controlador := pacienteHandler.NewControladorProducto(pacienteService)
 
-	PacientesGroup.GET("/:id", controlador.GetByID())
+	PacientesGroup.GET("/:id", middleware.Authenticate(), controlador.GetByID())
 	PacientesGroup.POST("/create", controlador.Create())
 	PacientesGroup.PUT("/:id", controlador.Update())
 	PacientesGroup.DELETE("/:id", controlador.Delete())
