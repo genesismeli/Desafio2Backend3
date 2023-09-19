@@ -8,12 +8,15 @@ import (
 
 var (
 	ErrNotFound = errors.New("odontologo not found")
+	ErrStatement = errors.New("statement error")
+    ErrExec      = errors.New("execution error")
+    ErrLastId    = errors.New("last ID error")
+
 )
 
 
 type Repository interface {
 	Create(ctx context.Context, odontologo Odontologo) (Odontologo, error)
-	GetAll(ctx context.Context) ([]Odontologo, error)
 	GetByID(ctx context.Context, id int) (Odontologo, error)
 	Update(ctx context.Context, odontologo Odontologo) (Odontologo, error)
 	Delete(ctx context.Context, id int) error
@@ -44,7 +47,7 @@ func (r *repository) Create(ctx context.Context, odontologo Odontologo) (Odontol
 	result, err := statement.Exec(
 		odontologo.Matricula,
 		odontologo.Apellido,
-		odontologo.Nombre
+		odontologo.Nombre,
 		
 		
 	)
@@ -72,7 +75,7 @@ func (r *repository) GetByID(ctx context.Context, id int) (Odontologo, error) {
 		&odontologo.ID,
 		&odontologo.Matricula,
 		&odontologo.Apellido,
-		&odontologo.Name
+		&odontologo.Nombre,
 		
 		
 	)
