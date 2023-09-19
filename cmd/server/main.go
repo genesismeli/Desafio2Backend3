@@ -10,6 +10,8 @@ import (
 	pacienteModel "github.com/genesismeli/Desafio2Backend3/internal/domain/paciente"
 	odontologoHandler "github.com/genesismeli/Desafio2Backend3/cmd/server/handler/odontologo"
 	odontologoModel "github.com/genesismeli/Desafio2Backend3/internal/domain/odontologo"
+	turnoHandler "github.com/genesismeli/Desafio2Backend3/cmd/server/handler/turno"
+	turnoModel "github.com/genesismeli/Desafio2Backend3/internal/domain/turno"
 	"log"
 
 	"github.com/genesismeli/Desafio2Backend3/core/middleware"
@@ -44,11 +46,11 @@ func main() {
 	odontologoService := odontologoModel.NewService(odontologoDatabase)
 	controladorOdontologo := odontologoHandler.NewControladorOdontologo(odontologoService)
 
-	OdontologoGroup.POST("/create", controladorOdontologo.Create())
 	OdontologoGroup.GET("/:id", controladorOdontologo.GetByID())
-	OdontologoGroup.PUT("/:id", controladorOdontologo.Update())
-	OdontologoGroup.PATCH("/:id", controladorOdontologo.UpdateSubject())
-	OdontologoGroup.DELETE("/:id", controladorOdontologo.Delete())
+	OdontologoGroup.POST("/create",middleware.Authenticate(), controladorOdontologo.Create())
+	OdontologoGroup.PUT("/:id",middleware.Authenticate(), controladorOdontologo.Update())
+	OdontologoGroup.PATCH("/:id",middleware.Authenticate(), controladorOdontologo.UpdateSubject())
+	OdontologoGroup.DELETE("/:id",middleware.Authenticate(), controladorOdontologo.Delete())
 
 	// Router Group para pacientes
 	PacientesGroup := router.Group("/pacientes")
@@ -57,11 +59,24 @@ func main() {
 	pacienteService := pacienteModel.NewService(pacienteDatabase)
 	controladorPaciente := pacienteHandler.NewControladorProducto(pacienteService)
 
-	PacientesGroup.GET("/:id", middleware.Authenticate(), controladorPaciente.GetByID())
-	PacientesGroup.POST("/create", controladorPaciente.Create())
-	PacientesGroup.PUT("/:id", controladorPaciente.Update())
-	PacientesGroup.DELETE("/:id", controladorPaciente.Delete())
-	PacientesGroup.PATCH("/patch/:id", controladorPaciente.UpdateField())
+	PacientesGroup.GET("/:id", controladorPaciente.GetByID())
+	PacientesGroup.POST("/create",middleware.Authenticate(), controladorPaciente.Create())
+	PacientesGroup.PUT("/:id",middleware.Authenticate(), controladorPaciente.Update())
+	PacientesGroup.PATCH("/patch/:id",middleware.Authenticate(), controladorPaciente.UpdateField())
+	PacientesGroup.DELETE("/:id",middleware.Authenticate(), controladorPaciente.Delete())
+	
+	// Router Group para turnos
+	turnosGroup := router.Group("/turnos")
+
+	turnoDatabase := turnoModel.NewRepositoryMySql(db)
+	turnoService := turnoModel.NewService(turnoDatabase)
+	controladorTurno := turnoHandler.NewControladorProducto(turnoService)
+	turnosGroup.GET("/", controladorTurno.GetByID())
+	turnosGroup.POST("/",middleware.Authenticate(), controladorTurno.Create())
+	turnosGroup.PUT("/",middleware.Authenticate(), controladorTurno.Update())
+	turnosGroup.PATCH("/",middleware.Authenticate(), controladorTurno.UpdateField())
+	turnosGroup.DELETE("/",middleware.Authenticate(), controladorTurno.Delete())
+
 
 	router.Run("localhost" + puerto)
 

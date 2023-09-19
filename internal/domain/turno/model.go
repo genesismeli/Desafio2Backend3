@@ -20,7 +20,10 @@ type RequestTurno struct {
 	Descripcion string                `json:"descripcion"`
 }
 
-type RequestUpdateTurnoSubject struct {
-	key   string `query:"key"`
-	value string `query:"value"`
+type RequestTurno2 struct {
+	ID          *int                   `json:"id"`
+	Paciente    *paciente.Paciente     `json:"paciente"`
+	Odontologo  *odontologo.Odontologo `json:"odontologo"`
+	FechaHora   *string                `json:"fecha-hora"`
+	Descripcion *string                `json:"descripcion"`
 }

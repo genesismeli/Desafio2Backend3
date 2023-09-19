@@ -12,6 +12,7 @@ type Service interface {
 	Create(ctx context.Context, requestTurno RequestTurno) (Turno, error)
 	Update(ctx context.Context, requestTurno RequestTurno, id int) (Turno, error)
 	Delete(ctx context.Context, id int) error
+	UpdateField(ctx context.Context, requestTurno2 RequestTurno2, id int) (Turno, error)
 }
 
 type service struct {
@@ -70,12 +71,54 @@ func (s *service) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
+func (s *service) UpdateField(ctx context.Context, requestTurno2 RequestTurno2, id int) (Turno, error) {
+
+	turnoFromDB, err := s.repository.GetByID(ctx, id)
+	if err != nil {
+		log.Println("Error en servicio de turno:", err.Error())
+		return Turno{}, errors.New("error en servicio. Metodo GetByID desde updateFild")
+	}
+
+	turno := requestToTurno2(requestTurno2, turnoFromDB)
+
+	response, err := s.repository.Update(ctx, turno)
+	if err != nil {
+		log.Println("log de error en service de turno", err.Error())
+		return Turno{}, errors.New("error en servicio. Metodo Update")
+	}
+
+	return response, nil
+
+}
+
 func requestToTurno(request RequestTurno) Turno {
 	var turno Turno
 	turno.Paciente = request.Paciente
 	turno.Odontologo = request.Odontologo
 	turno.FechaHora = request.FechaHora
 	turno.Descripcion = request.Descripcion
+
+	return turno
+}
+
+func requestToTurno2(userReq RequestTurno2, turno Turno) Turno {
+
+	if userReq.Paciente != nil {
+		turno.Paciente = *userReq.Paciente
+	}
+
+	if userReq.Odontologo != nil {
+		turno.Odontologo = *userReq.Odontologo
+	}
+
+	if userReq.FechaHora != nil {
+		turno.FechaHora = *userReq.FechaHora
+	}
+
+	if userReq.Descripcion != nil {
+		turno.Descripcion = *userReq.Descripcion
+	}
+
 
 	return turno
 }
