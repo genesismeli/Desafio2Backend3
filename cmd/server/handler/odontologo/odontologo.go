@@ -3,6 +3,7 @@ package odontologo
 import (
 	"net/http"
 	"strconv"
+
 	"github.com/genesismeli/Desafio2Backend3/core/web"
 	"github.com/genesismeli/Desafio2Backend3/internal/domain/odontologo"
 	"github.com/gin-gonic/gin"
@@ -18,6 +19,31 @@ func NewControladorOdontologo(service odontologo.Service) *Controlador {
 	}
 }
 
+
+func (c *Controlador) Create() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var request odontologo.RequestOdontologo
+
+		err := ctx.Bind(&request)
+
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request")
+			return
+		}
+
+		odontologo, err := c.service.Create(ctx, request)
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		web.Success(ctx, http.StatusOK, gin.H{
+			"data": odontologo,
+		})
+
+	}
+}
 
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse

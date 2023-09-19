@@ -33,6 +33,7 @@ func main() {
 	odontologoService := odontologoModel.NewService(odontologoDatabase)
 	controlador := odontologoHandler.NewControladorOdontologo(odontologoService)
 
+	OdontologoGroup.POST("/create", controlador.Create())
 	OdontologoGroup.GET("/:id", controlador.GetByID())
 	OdontologoGroup.PUT("/:id", controlador.Update())
 	OdontologoGroup.PATCH("/:id", controlador.UpdateSubject())
