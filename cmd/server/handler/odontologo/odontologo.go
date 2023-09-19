@@ -3,6 +3,7 @@ package odontologo
 import (
 	"net/http"
 	"strconv"
+
 	"github.com/genesismeli/Desafio2Backend3/core/web"
 	"github.com/genesismeli/Desafio2Backend3/internal/domain/odontologo"
 	"github.com/gin-gonic/gin"
@@ -19,6 +20,31 @@ func NewControladorOdontologo(service odontologo.Service) *Controlador {
 }
 
 
+func (c *Controlador) Create() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var request odontologo.RequestOdontologo
+
+		err := ctx.Bind(&request)
+
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request")
+			return
+		}
+
+		odontologo, err := c.service.Create(ctx, request)
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		web.Success(ctx, http.StatusOK, gin.H{
+			"data": odontologo,
+		})
+
+	}
+}
+
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
@@ -31,14 +57,14 @@ func (c *Controlador) GetByID() gin.HandlerFunc {
 			return
 		}
 
-		product, err := c.service.GetByID(ctx, id)
+		odontologo, err := c.service.GetByID(ctx, id)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
 		web.Success(ctx, http.StatusOK, gin.H{
-			"data": odonto,
+			"data": odontologo,
 		})
 	}
 }
@@ -104,14 +130,14 @@ func (c *Controlador) UpdateSubject() gin.HandlerFunc {
 			return
 		}
 
-		odonto, err := c.service.UpdateSubject(ctx, idInt, request)
+		odontologo, err := c.service.UpdateSubject(ctx, idInt, request)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
-		web.Succses(ctx, http.StatusOK, gin.H{
-			"data": odonto,
+		web.Success(ctx, http.StatusOK, gin.H{
+			"data": odontologo,
 		})
 
 	}
