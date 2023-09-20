@@ -20,7 +20,13 @@ func NewControladorTurno(service turno.Service) *Controlador {
 		service: service,
 	}
 }
-
+// Summary Get turno.
+// @Tags   domain.turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [get]
 func (c *Controlador) GetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -40,6 +46,13 @@ func (c *Controlador) GetByID() gin.HandlerFunc {
 
 }
 
+// Summary Post turno.
+// @Tags   domain.turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/create [post]
 func (c *Controlador) Create() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -67,7 +80,13 @@ func (c *Controlador) Create() gin.HandlerFunc {
 	
 
 
-
+// Summary Put turno.
+// @Tags   domain.turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [put]
 func (c *Controlador) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var request turno.RequestTurno
@@ -99,7 +118,13 @@ func (c *Controlador) Update() gin.HandlerFunc {
 
 	}
 }
-
+// Summary Delete turno.
+// @Tags   domain.turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [delete]
 func (c *Controlador) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -120,6 +145,13 @@ func (c *Controlador) Delete() gin.HandlerFunc {
 	}
 }
 
+// Summary Patch turno.
+// @Tags   domain.turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/patch/:id [patch]
 func (c *Controlador) UpdateField() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var request turno.RequestTurno2
