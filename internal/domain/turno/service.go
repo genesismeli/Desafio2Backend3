@@ -9,7 +9,7 @@ import (
 type Service interface {
 	GetByID(ctx context.Context, id int) (Turno, error)
 	Create(ctx context.Context, requestTurno RequestTurno) (Turno, error)
-	//Update(ctx context.Context, requestTurno RequestTurno, id int) (Turno, error)
+	Update(ctx context.Context, requestTurno RequestTurno, id int) (Turno, error)
 	Delete(ctx context.Context, id int) error
 	//UpdateField(ctx context.Context, requestTurno2 RequestTurno2, id int) (Turno, error)
 }
@@ -40,7 +40,18 @@ func (s *service) Create(ctx context.Context, requestTurno RequestTurno) (Turno,
 	response, err := s.repository.Create(ctx, turno)
 	if err != nil {
 		log.Println("Error en service Turno: Método Create")
-		return Turno{}, errors.New("Error en service Turno: Método Create")
+		return Turno{}, errors.New("error en service Turno: Método Create")
+	}
+	return response, nil
+}
+
+func (s *service) Update(ctx context.Context, requestTurno RequestTurno, id int) (Turno, error) {
+	turno := requestToTurno(requestTurno)
+	turno.ID = id
+	response, err := s.repository.Update(ctx, turno)
+	if err != nil {
+		log.Println("log de error en service de paciente", err.Error())
+		return Turno{}, errors.New("error en servicio. Metodo Update")
 	}
 
 	return response, nil
@@ -62,7 +73,7 @@ func (s *service) Delete(ctx context.Context, id int) error {
 	err := s.repository.Delete(ctx, id)
 	if err != nil {
 		log.Println("Error borrado de turno", err.Error())
-		return errors.New("Error en service de Turnos: Metodo Delete")
+		return errors.New("error en service de Turnos: Metodo Delete")
 	}
 
 	return nil

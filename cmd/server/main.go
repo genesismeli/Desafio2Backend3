@@ -84,9 +84,9 @@ func main() {
 	controladorTurno := turnoHandler.NewControladorTurno(turnoService)
 	turnosGroup.GET("/:id", controladorTurno.GetByID())
 	turnosGroup.POST("/create",middleware.Authenticate(), controladorTurno.Create())
-	/* turnosGroup.PUT("/:id",middleware.Authenticate(), controladorTurno.Update())
-	turnosGroup.PATCH("/patch/:id",middleware.Authenticate(), controladorTurno.UpdateField())
-	turnosGroup.DELETE("/:id",middleware.Authenticate(), controladorTurno.Delete()) */
+	turnosGroup.PUT("/:id", middleware.Authenticate(), controladorTurno.Update())
+	//turnosGroup.PATCH("/patch/:id",middleware.Authenticate(), controladorTurno.UpdateField())
+	turnosGroup.DELETE("/:id",middleware.Authenticate(), controladorTurno.Delete()) 
 
 
 	router.Run("localhost" + puerto)

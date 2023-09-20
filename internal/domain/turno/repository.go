@@ -36,14 +36,42 @@ func (r *repository) GetByID(ctx context.Context, id int) (Turno, error) {
 	return turno, nil
 }
 
-
-// Create crea un turno
 func (r *repository) Create(ctx context.Context, turno Turno) (Turno, error) {
 
-	statement, err := r.db.Prepare(QueryInsertTurno)
+    statement, err := r.db.Prepare(QueryInsertTurno)
+
+    if err != nil {
+        return Turno{}, ErrStatement
+    }
+
+    defer statement.Close()
+
+    result, err := statement.Exec(
+        turno.PacienteDNI,
+        turno.OdontologoMatri,
+        turno.FechaHora,
+        turno.Descripcion,
+    )
+
+    if err != nil {
+        return Turno{}, ErrExec
+    }
+
+    lastId, err := result.LastInsertId()
+    if err != nil {
+        return Turno{}, ErrLastId
+    }
+
+    turno.ID = int(lastId)
+
+    return turno, nil
+}
+
+func (r *repository) Update(ctx context.Context, turno Turno) (Turno, error) {
+	statement, err := r.db.Prepare(`UPDATE odontologos.turnos SET paciente = ?, odontologo = ?, fechaHora = ?, descripcion = ? WHERE id = ?`)
 
 	if err != nil {
-		return Turno{}, ErrStatement
+		return Turno{}, err
 	}
 
 	defer statement.Close()
@@ -53,38 +81,41 @@ func (r *repository) Create(ctx context.Context, turno Turno) (Turno, error) {
 		turno.OdontologoMatri,
 		turno.FechaHora,
 		turno.Descripcion,
+		turno.ID,
 	)
 
 	if err != nil {
-		return Turno{}, ErrExec
+		return Turno{}, err
 	}
 
-	lastId, err := result.LastInsertId()
+	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		return Turno{}, ErrLastId
+		return Turno{}, err
 	}
 
-	turno.ID = int(lastId)
+	if rowsAffected < 1 {
+		return Turno{}, ErrNotFound
+	}
 
 	return turno, nil
 }
 
 // Delete elimina el turno
 func (r *repository) Delete(ctx context.Context, id int) error {
-	result, err := r.db.Exec(QueryDeleteTurno, id)
-	if err != nil {
-		return err
-	}
+    result, err := r.db.Exec(QueryDeleteTurno, id)
+    if err != nil {
+        return err
+    }
 
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		return err
-	}
+    rowsAffected, err := result.RowsAffected()
+    if err != nil {
+        return err
+    }
 
-	if rowsAffected < 1 {
-		return ErrNotFound
-	}
+    if rowsAffected < 1 {
+        return ErrNotFound
+    }
 
-	return nil
+    return nil
 
 }

@@ -52,14 +52,49 @@ func (c *Controlador) Create() gin.HandlerFunc {
 			return
 		}
 
-		turn, err := c.service.Create(ctx, request)
+		turno, err := c.service.Create(ctx, request)
+		if err != nil {
+            web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+            return
+        }
+
+        web.Success(ctx, http.StatusOK, gin.H{
+            "data": turno,
+        })
+    }
+}
+
+	
+
+
+
+func (c *Controlador) Update() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var request turno.RequestTurno
+		errBind := ctx.Bind(&request)
+
+		if errBind != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request binding")
+			return
+		}
+
+		id := ctx.Param("id")
+
+		idInt, err := strconv.Atoi(id)
+
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request param")
+			return
+		}
+
+		turno, err := c.service.Update(ctx, request, idInt)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
 		web.Success(ctx, http.StatusOK, gin.H{
-			"data": turn,
+			"data": turno,
 		})
 
 	}
