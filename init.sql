@@ -43,8 +43,8 @@ CREATE INDEX idx_pacientes_DNI ON pacientes (DNI);
 CREATE TABLE IF NOT EXISTS turnos (
   id INT NOT NULL AUTO_INCREMENT,
   dentista_matricula VARCHAR(50) NOT NULL,
-  paciente_DNI VARCHAR(20) NOT NULL,
-  fecha_hora DATETIME NOT NULL,
+  paciente_DNI VARCHAR(50) NOT NULL,
+  fecha_hora DATE NOT NULL,
   descripcion VARCHAR(1000),
   PRIMARY KEY (id),
   FOREIGN KEY (dentista_matricula) REFERENCES dentistas(matricula) ON DELETE CASCADE  ON UPDATE CASCADE,
@@ -66,16 +66,14 @@ VALUES
   ('333333', 'Laura', 'Gómez', 'Calle C 789', '2023-03-05');
 
 -- Insertar datos ficticios en la tabla turnos 
-INSERT INTO turnos (dentista_matricula, paciente_DNI, fecha_hora)
+INSERT INTO turnos (dentista_matricula, paciente_DNI, fecha_hora,descripcion)
 VALUES
-  ('12345', '111111', '2023-09-16 10:00:00'),
-  ('67890', '222222', '2023-09-17 14:30:00'),
-  ('54321', '333333', '2023-09-18 09:15:00');
+  ('12345', '111111', '2023-09-16 10:00:00','descripcion1'),
+  ('67890', '222222', '2023-09-17 14:30:00','descripcion2'),
+  ('54321', '333333', '2023-09-18 09:15:00','descripcion3');
 
   -- Insertar dos turnos adicionales en la tabla turnos con descripción
 INSERT INTO turnos (dentista_matricula, paciente_DNI, fecha_hora, descripcion)
 VALUES
   ('12345', '111111', '2023-09-19 11:30:00', 'Revisión anual'),
   ('67890', '222222', '2023-09-20 15:00:00', 'Limpieza y consulta');
-  
-  select * from pacientes;
