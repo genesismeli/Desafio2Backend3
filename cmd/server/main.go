@@ -85,7 +85,7 @@ func main() {
 	turnosGroup.GET("/:id", controladorTurno.GetByID())
 	turnosGroup.POST("/create",middleware.Authenticate(), controladorTurno.Create())
 	turnosGroup.PUT("/:id", middleware.Authenticate(), controladorTurno.Update())
-	//turnosGroup.PATCH("/patch/:id",middleware.Authenticate(), controladorTurno.UpdateField())
+	turnosGroup.PATCH("/patch/:id",middleware.Authenticate(), controladorTurno.UpdateField())
 	turnosGroup.DELETE("/:id",middleware.Authenticate(), controladorTurno.Delete()) 
 
 
