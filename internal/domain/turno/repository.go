@@ -37,30 +37,28 @@ func (r *repository) GetByID(ctx context.Context, id int) (Turno, error) {
 }
 
 func (r *repository) Create(ctx context.Context, turno Turno) (Turno, error) {
-    // Construir la consulta SQL directamente
-    sqlQuery := "INSERT INTO odontologos.turnos (paciente_DNI, dentista_matricula, fecha_hora, descripcion) VALUES (?, ?, ?, ?)"
+	// Construir la consulta SQL directamente
+	sqlQuery := "INSERT INTO odontologos.turnos (paciente_DNI, dentista_matricula, fecha_hora, descripcion) VALUES (?, ?, ?, ?)"
 
-    // Ejecutar la consulta SQL directamente
-    result, err := r.db.Exec(sqlQuery, turno.PacienteDNI, turno.OdontologoMatri, "2023-01-15", turno.Descripcion)
+	// Ejecutar la consulta SQL directamente
+	result, err := r.db.Exec(sqlQuery, turno.PacienteDNI, turno.OdontologoMatri, "2023-01-15", turno.Descripcion)
 
-    if err != nil {
-        return Turno{}, err
-    }
+	if err != nil {
+		return Turno{}, err
+	}
 
-    lastID, err := result.LastInsertId()
-    if err != nil {
-        return Turno{}, err
-    }
+	lastID, err := result.LastInsertId()
+	if err != nil {
+		return Turno{}, err
+	}
 
-    turno.ID = int(lastID)
+	turno.ID = int(lastID)
 
-    return turno, nil
+	return turno, nil
 }
 
-
-
 func (r *repository) Update(ctx context.Context, turno Turno) (Turno, error) {
-	statement, err := r.db.Prepare(`UPDATE odontologos.turnos SET paciente = ?, odontologo = ?, fechaHora = ?, descripcion = ? WHERE id = ?`)
+	statement, err := r.db.Prepare(`UPDATE odontologos.turnos SET paciente_DNI = ?, dentista_matricula = ?, fecha_hora = ?, descripcion = ? WHERE id = ?`)
 
 	if err != nil {
 		return Turno{}, err
@@ -71,7 +69,7 @@ func (r *repository) Update(ctx context.Context, turno Turno) (Turno, error) {
 	result, err := statement.Exec(
 		turno.PacienteDNI,
 		turno.OdontologoMatri,
-		turno.FechaHora,
+		"2023-09-17",
 		turno.Descripcion,
 		turno.ID,
 	)
@@ -94,21 +92,20 @@ func (r *repository) Update(ctx context.Context, turno Turno) (Turno, error) {
 
 // Delete elimina el turno
 func (r *repository) Delete(ctx context.Context, id int) error {
-    result, err := r.db.Exec(QueryDeleteTurno, id)
-    if err != nil {
-        return err
-    }
+	result, err := r.db.Exec(QueryDeleteTurno, id)
+	if err != nil {
+		return err
+	}
 
-    rowsAffected, err := result.RowsAffected()
-    if err != nil {
-        return err
-    }
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
 
-    if rowsAffected < 1 {
-        return ErrNotFound
-    }
+	if rowsAffected < 1 {
+		return ErrNotFound
+	}
 
-    return nil
+	return nil
 
 }
-

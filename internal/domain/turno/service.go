@@ -50,7 +50,7 @@ func (s *service) Update(ctx context.Context, requestTurno RequestTurno, id int)
 	turno.ID = id
 	response, err := s.repository.Update(ctx, turno)
 	if err != nil {
-		log.Println("log de error en service de paciente", err.Error())
+		log.Println("log de error en service de turni", err.Error())
 		return Turno{}, errors.New("error en servicio. Metodo Update")
 	}
 
@@ -66,7 +66,6 @@ func requestToTurno(requestTurno RequestTurno) Turno {
 
 	return turno
 }
-
 
 // Delete elimina el turno
 func (s *service) Delete(ctx context.Context, id int) error {
