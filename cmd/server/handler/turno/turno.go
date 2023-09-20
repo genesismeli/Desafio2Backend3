@@ -64,3 +64,23 @@ func (c *Controlador) Create() gin.HandlerFunc {
 
 	}
 }
+
+func (c *Controlador) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
+			return
+		}
+
+		err = c.service.Delete(ctx, id)
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		web.Success(ctx, http.StatusOK, gin.H{
+			"mensaje": "turno eliminado",
+		})
+	}
+}

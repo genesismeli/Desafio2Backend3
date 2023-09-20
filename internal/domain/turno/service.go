@@ -10,7 +10,7 @@ type Service interface {
 	GetByID(ctx context.Context, id int) (Turno, error)
 	Create(ctx context.Context, requestTurno RequestTurno) (Turno, error)
 	//Update(ctx context.Context, requestTurno RequestTurno, id int) (Turno, error)
-	//Delete(ctx context.Context, id int) error
+	Delete(ctx context.Context, id int) error
 	//UpdateField(ctx context.Context, requestTurno2 RequestTurno2, id int) (Turno, error)
 }
 
@@ -54,4 +54,16 @@ func requestToTurno(requestTurno RequestTurno) Turno {
 	turno.Descripcion = requestTurno.Descripcion
 
 	return turno
+}
+
+
+// Delete elimina el turno
+func (s *service) Delete(ctx context.Context, id int) error {
+	err := s.repository.Delete(ctx, id)
+	if err != nil {
+		log.Println("Error borrado de turno", err.Error())
+		return errors.New("Error en service de Turnos: Metodo Delete")
+	}
+
+	return nil
 }

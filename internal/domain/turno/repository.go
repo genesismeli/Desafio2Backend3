@@ -68,3 +68,23 @@ func (r *repository) Create(ctx context.Context, turno Turno) (Turno, error) {
 
 	return turno, nil
 }
+
+// Delete elimina el turno
+func (r *repository) Delete(ctx context.Context, id int) error {
+	result, err := r.db.Exec(QueryDeleteTurno, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected < 1 {
+		return ErrNotFound
+	}
+
+	return nil
+
+}
