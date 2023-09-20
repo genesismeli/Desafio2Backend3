@@ -35,3 +35,36 @@ func (r *repository) GetByID(ctx context.Context, id int) (Turno, error) {
 
 	return turno, nil
 }
+
+
+// Create crea un turno
+func (r *repository) Create(ctx context.Context, turno Turno) (Turno, error) {
+
+	statement, err := r.db.Prepare(QueryInsertTurno)
+
+	if err != nil {
+		return Turno{}, ErrStatement
+	}
+
+	defer statement.Close()
+
+	result, err := statement.Exec(
+		turno.PacienteDNI,
+		turno.OdontologoMatri,
+		turno.FechaHora,
+		turno.Descripcion,
+	)
+
+	if err != nil {
+		return Turno{}, ErrExec
+	}
+
+	lastId, err := result.LastInsertId()
+	if err != nil {
+		return Turno{}, ErrLastId
+	}
+
+	turno.ID = int(lastId)
+
+	return turno, nil
+}

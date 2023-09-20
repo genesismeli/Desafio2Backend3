@@ -15,7 +15,7 @@ type Controlador struct {
 	service turno.Service
 }
 
-func NewControladorProducto(service turno.Service) *Controlador {
+func NewControladorTurno(service turno.Service) *Controlador {
 	return &Controlador{
 		service: service,
 	}
@@ -38,4 +38,29 @@ func (c *Controlador) GetByID() gin.HandlerFunc {
 		web.Success(ctx, http.StatusOK, turno)
 	}
 
+}
+
+func (c *Controlador) Create() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var request turno.RequestTurno
+
+		err := ctx.Bind(&request)
+
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request")
+			return
+		}
+
+		turn, err := c.service.Create(ctx, request)
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		web.Success(ctx, http.StatusOK, gin.H{
+			"data": turn,
+		})
+
+	}
 }
