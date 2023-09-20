@@ -6,18 +6,18 @@ import (
 )
 
 type Turno struct {
-	ID          int                   `json:"id"`
-	Paciente    paciente.Paciente     `json:"paciente"`
-	Odontologo  odontologo.Odontologo `json:"odontologo"`
-	FechaHora   string                `json:"fecha-hora"`
-	Descripcion string                `json:"descripcion"`
+	ID              int    `json:"id"`
+	PacienteDNI     string `json:"paciente"`
+	OdontologoMatri string `json:"odontologo"`
+	FechaHora       string `json:"fecha-hora"`
+	Descripcion     string `json:"descripcion"`
 }
 
 type RequestTurno struct {
-	Paciente    paciente.Paciente     `json:"paciente"`
-	Odontologo  odontologo.Odontologo `json:"odontologo"`
-	FechaHora   string                `json:"fechaHora"`
-	Descripcion string                `json:"descripcion"`
+	PacienteDNI     string `json:"paciente"`
+	OdontologoMatri string `json:"odontologo"`
+	FechaHora       string `json:"fechaHora"`
+	Descripcion     string `json:"descripcion"`
 }
 
 type RequestTurno2 struct {
