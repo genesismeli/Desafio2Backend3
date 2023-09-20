@@ -109,3 +109,20 @@ func (r *repository) Delete(ctx context.Context, id int) error {
 	return nil
 
 }
+func (r repository) GetByDNI(ctx context.Context, dni string) (Turno, error) {
+    row := r.db.QueryRow("SELECT FROM odontologos.turnos where paciente_DNI=?", dni)
+
+    var turno Turno
+
+    err := row.Scan(
+        &turno.ID,
+        &turno.OdontologoMatri,
+        &turno.PacienteDNI,
+        &turno.FechaHora,
+        &turno.Descripcion,
+    )
+    if err != nil {
+        return Turno{}, err
+    }
+    return turno, nil
+}

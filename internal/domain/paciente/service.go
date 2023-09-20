@@ -126,3 +126,5 @@ func requestToPaciente2(userReq RequestPaciente2, paciente Paciente) Paciente {
 
 	return paciente
 }
+
+

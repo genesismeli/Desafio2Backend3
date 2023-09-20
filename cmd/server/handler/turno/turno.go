@@ -3,7 +3,7 @@ package turno
 import (
 	"net/http"
 	"strconv"
-
+	"reflect"
 	"github.com/genesismeli/Desafio2Backend3/internal/domain/turno"
 
 	"github.com/genesismeli/Desafio2Backend3/core/web"
@@ -46,6 +46,29 @@ func (c *Controlador) GetByID() gin.HandlerFunc {
 
 }
 
+// Summary Get turno.
+// @Tags   domain.turno
+// @Produce json
+// @Success 200 {object} web.Response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:dni [get]
+func (c *Controlador) GetByDNI() gin.HandlerFunc {
+    return func(ctx *gin.Context) {
+        dni := ctx.Param("dni")
+        if reflect.TypeOf(dni)==nil  {
+            web.Error(ctx, http.StatusBadRequest, "%s", "dni invalido")
+            return
+        }
+
+        turno, err := c.service.GetByDNI(ctx,dni)
+        if err != nil {
+            web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+            return
+        }
+        web.Success(ctx, http.StatusOK, turno)
+    }
+}
 // Summary Post turno.
 // @Tags   domain.turno
 // @Produce json

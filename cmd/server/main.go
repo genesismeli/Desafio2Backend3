@@ -87,7 +87,7 @@ func main() {
 	turnosGroup.PUT("/:id", middleware.Authenticate(), controladorTurno.Update())
 	turnosGroup.PATCH("/patch/:id",middleware.Authenticate(), controladorTurno.UpdateField())
 	turnosGroup.DELETE("/:id",middleware.Authenticate(), controladorTurno.Delete()) 
-
+	turnosGroup.GET("/:dni", controladorTurno.GetByDNI())
 
 	router.Run("localhost" + puerto)
 

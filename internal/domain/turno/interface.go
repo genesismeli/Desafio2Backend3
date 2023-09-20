@@ -18,7 +18,5 @@ type Repository interface {
 	GetByID(ctx context.Context, id int) (Turno, error)
 	Update(ctx context.Context, turno Turno) (Turno, error)
 	Delete(ctx context.Context, id int) error
-	//UpdateField(ctx context.Context, turno Turno) (Turno, error)
-
-
+    GetByDNI(ctx context.Context, dni string) (Turno, error)
 }

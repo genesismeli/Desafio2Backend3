@@ -12,6 +12,7 @@ type Service interface {
 	Update(ctx context.Context, requestTurno RequestTurno, id int) (Turno, error)
 	Delete(ctx context.Context, id int) error
 	UpdateField(ctx context.Context, requestTurno2 RequestTurno2, id int) (Turno, error)
+	GetByDNI(ctx context.Context, dni string) (Turno, error)
 }
 
 type service struct {
@@ -115,4 +116,14 @@ func requestToTurno2(userReq RequestTurno2, turno Turno) Turno {
 		turno.Descripcion = *userReq.Descripcion
 	}
 	return turno
+}
+
+func (s *service) GetByDNI(ctx context.Context, dni string) (Turno, error) {
+    turno, err := s.repository.GetByDNI(ctx, dni)
+    if err!= nil {
+        log.Println("Error en servicio de turnos:", err.Error())
+        return Turno{}, errors.New("error en servicio. Metodo GetByDNI")
+    }
+
+    return turno, nil
 }
