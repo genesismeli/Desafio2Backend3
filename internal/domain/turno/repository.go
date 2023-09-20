@@ -37,35 +37,27 @@ func (r *repository) GetByID(ctx context.Context, id int) (Turno, error) {
 }
 
 func (r *repository) Create(ctx context.Context, turno Turno) (Turno, error) {
+    // Construir la consulta SQL directamente
+    sqlQuery := "INSERT INTO odontologos.turnos (paciente_DNI, dentista_matricula, fecha_hora, descripcion) VALUES (?, ?, ?, ?)"
 
-    statement, err := r.db.Prepare(QueryInsertTurno)
-
-    if err != nil {
-        return Turno{}, ErrStatement
-    }
-
-    defer statement.Close()
-
-    result, err := statement.Exec(
-        turno.PacienteDNI,
-        turno.OdontologoMatri,
-        turno.FechaHora,
-        turno.Descripcion,
-    )
+    // Ejecutar la consulta SQL directamente
+    result, err := r.db.Exec(sqlQuery, turno.PacienteDNI, turno.OdontologoMatri, "2023-01-15", turno.Descripcion)
 
     if err != nil {
-        return Turno{}, ErrExec
+        return Turno{}, err
     }
 
-    lastId, err := result.LastInsertId()
+    lastID, err := result.LastInsertId()
     if err != nil {
-        return Turno{}, ErrLastId
+        return Turno{}, err
     }
 
-    turno.ID = int(lastId)
+    turno.ID = int(lastID)
 
     return turno, nil
 }
+
+
 
 func (r *repository) Update(ctx context.Context, turno Turno) (Turno, error) {
 	statement, err := r.db.Prepare(`UPDATE odontologos.turnos SET paciente = ?, odontologo = ?, fechaHora = ?, descripcion = ? WHERE id = ?`)
@@ -119,3 +111,4 @@ func (r *repository) Delete(ctx context.Context, id int) error {
     return nil
 
 }
+
